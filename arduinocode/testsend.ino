@@ -76,6 +76,7 @@ void sendCodes (){
        Serial.println(id);
        Serial.println(ison);
        Serial.println("OK");
+      
         
         newData = false;
     }
