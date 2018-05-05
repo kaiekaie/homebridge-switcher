@@ -20,12 +20,46 @@ ArduinoSwitchPlatform.prototype.accessories = function(callback) {
     self.config.lights.forEach(function(sw) {
         self.accessories.push(new ArduinoLightAccessory(sw, self.log, self.config));
     });
+ 
     self.config.buttons.forEach(function(sw) {
         self.accessories.push(new ArduinoButtonAccessory(sw, self.log, self.config));
+    });
+    self.config.HumiditySensor.forEach(function(sw) {
+        self.accessories.push(new ArduinoHumiditySensorAccessory(sw, self.log, self.config));
     });
 
     callback(self.accessories);
 }
+
+function ArduinoHumiditySensorAccessory (sw, log, config){
+    var self = this;
+    self.name = sw.name;
+    self.sw = sw;
+    self.log = log;
+    self.config = config;
+
+    self.service = new Service.HumiditySensor(self.name);
+    self.service.setCharacteristic(Characteristic.CurrentRelativeHumidity ,10)
+    self.service.setCharacteristic(Characteristic.StatusActive ,true)
+  
+}
+
+ArduinoHumiditySensorAccessory.prototype.getServices = function() {
+    var self = this;
+    var services = [];
+    var service = new Service.AccessoryInformation();
+    service.setCharacteristic(Characteristic.Name, self.name)
+
+    .setCharacteristic(Characteristic.Manufacturer, "sensor")
+    .setCharacteristic(Characteristic.Model, "asd")
+    .setCharacteristic(Characteristic.SerialNumber, "213")
+    .setCharacteristic(Characteristic.FirmwareRevision, process.env.version)
+    .setCharacteristic(Characteristic.HardwareRevision, '1.0.0');
+    services.push(service);
+    services.push(self.service);
+    return services;
+}
+
 function ArduinoButtonAccessory(sw, log, config) {
     var self = this;
     self.name = sw.name;
@@ -79,6 +113,10 @@ ArduinoButtonAccessory.prototype.getServices = function() {
     return services;
 }
 
+
+
+
+
 function ArduinoLightAccessory(sw, log, config) {
     var self = this;
     self.name = sw.name;
@@ -90,9 +128,9 @@ function ArduinoLightAccessory(sw, log, config) {
 
     self.service = new Service.Lightbulb(self.name);
 
-
+   
     self.service.getCharacteristic(Characteristic.On).value = self.currentState;
-
+// self.service.setCharacteristic(Characteristic.Brightness,10)
     self.service.getCharacteristic(Characteristic.On).on('get', function(cb) {
         cb(null, self.currentState);
     }.bind(self));
