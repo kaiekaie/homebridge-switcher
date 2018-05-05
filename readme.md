@@ -1,4 +1,4 @@
-<h2>homebridge-switcher (WIP)</h2>
+<h2>homebridge-switcher </h2>
 
 Simple RF switch for remote controlls 
 
