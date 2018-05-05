@@ -1,0 +1,16 @@
+{
+  "name": "arduinotest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parser-readline": "^1.0.2",
+    "serialport": "^6.2.0",
+    "yargs": "^11.0.0"
+  }
+}
