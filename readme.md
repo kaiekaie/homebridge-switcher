@@ -1,8 +1,9 @@
 <h2>homebridge-switcher (WIP)</h2>
 arduino code
 <code>
-#include <NewRemoteTransmitter.h>
 
+
+include <NewRemoteTransmitter.h>
 
 String inData = "";
 const byte numChars = 255; // max number of received chars
