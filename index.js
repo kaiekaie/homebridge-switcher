@@ -1,10 +1,7 @@
-var Service, Characteristic, LastUpdate;
-var blockPort;
-var inPort;
-var outPort;
+var Service, Characteristic;
+
 var sentCodes = [];
-var lastInputTime = 0;
-var inputOutputTimeout = 500;
+
 const sendCodes = require('./sp');
 
 
