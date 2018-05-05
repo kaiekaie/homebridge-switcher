@@ -5,7 +5,7 @@ var sentCodes = [];
 const sendCodes = require('./sp');
 
 
-
+process.setMaxListeners(20);
 
 function ArduinoSwitchPlatform(log, config) {
     var self = this;

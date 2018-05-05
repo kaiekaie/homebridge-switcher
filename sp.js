@@ -9,19 +9,19 @@ var port = new SerialPort('COM3', {
 });
 
 const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
-
+process.setMaxListeners(20);
 
 module.exports = SendCodes = (remoteId, deviceId, ison) => {
 return new Promise((resolve,reject) => {
 
-            setTimeout(() => {
+       
                 port.write(`${remoteId}/${deviceId}/${ison}\n`, (err) => {
                     if (err) {
                         reject(err.message)
                         return console.log('Error opening port: ', err.message);
                     }
                 });
-            },400)
+        
    
             parser.on('data', (data) => {
   
