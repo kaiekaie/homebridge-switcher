@@ -88,7 +88,8 @@ function ArduinoLightAccessory(sw, log, config) {
     self.currentState = false;
     self.throttle = config.throttle?config.throttle:500;
 
-    self.service = new Service.Switch(self.name);
+    self.service = new Service.Lightbulb(self.name);
+
 
     self.service.getCharacteristic(Characteristic.On).value = self.currentState;
 

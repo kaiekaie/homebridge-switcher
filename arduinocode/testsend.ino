@@ -1,5 +1,5 @@
+#include <NewRemoteReceiver.h>
 #include <NewRemoteTransmitter.h>
-
 
 String inData = "";
 const byte numChars = 255; // max number of received chars
@@ -10,8 +10,10 @@ boolean newData = false; // was a full new string received?
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(9600);
-  Serial.setTimeout(400);
+  Serial.setTimeout(100);
 Serial.println("open");
+
+
 
 }
 
@@ -66,7 +68,7 @@ void sendCodes (){
 
    if (newData == true) {
         long remoteid = getValue(receivedChars, '/', 0).toInt();
-        long id = getValue(receivedChars, '/', 1).toInt();
+        byte id = getValue(receivedChars, '/', 1).toInt();
         boolean ison = getValue(receivedChars, '/', 2).toInt();
         NewRemoteTransmitter transmitter(remoteid, 3, 256);
         transmitter.sendUnit(id, ison);
