@@ -1,14 +1,24 @@
 {
-  "name": "arduinotest",
+  "name": "homebridge-switcher",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "keywords": [
+    "homebridge-plugin",
+    "switch",
+    "rcswitch"
+  ],
+  "engines": {
+    "homebridge": ">=0.4.0",
+    "node": ">=0.12.0"
+  },
+  "author": "Magnus aga",
   "license": "ISC",
   "dependencies": {
+    "memwatch-next": "^0.3.0",
     "parser-readline": "^1.0.2",
     "serialport": "^6.2.0",
     "yargs": "^11.0.0"

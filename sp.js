@@ -1,35 +1,45 @@
+
+
 var SerialPort = require('serialport');
 const Readline = require('parser-readline')
 const argv = require('yargs').argv
+
 var port = new SerialPort('COM3', {
     baudRate: 9600,
 });
 
 const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
 
+
 module.exports = SendCodes = (remoteId, deviceId, ison) => {
+return new Promise((resolve,reject) => {
 
-    port.open(function () {
-        // Because there's no callback to write, write errors will be emitted on the port:
-        parser.on('data', (data) => {
-            console.log(data);
-        })
-
-        parser.on('data', (data) => {
-            if (data === "open") {
+            setTimeout(() => {
                 port.write(`${remoteId}/${deviceId}/${ison}\n`, (err) => {
                     if (err) {
+                        reject(err.message)
                         return console.log('Error opening port: ', err.message);
                     }
                 });
-            }
+            },400)
+   
+            parser.on('data', (data) => {
+  
+                if(data === "OK"){
+                    resolve("ok")
+         
+                }
+            })
 
         })
+   
+} 
 
-    });
-}
 
+if ('remoteId' in argv && 'deviceId'in argv && 'ison' in argv) {
 
-if (argv.remoteId && argv.deviceId && argv.ison) {
-    SendCodes(argv.remoteId, argv.deviceId, argv.ison)
+    SendCodes(argv.remoteId, argv.deviceId, argv.ison).then(() => {
+        console.log("done")
+
+    })
 }

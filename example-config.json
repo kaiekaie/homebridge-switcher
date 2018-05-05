@@ -1,0 +1,38 @@
+{"bridge": {
+  "name": "Homebridge",
+  "username": "CC:22:3D:E3:CE:30",
+  "port": 51826,
+  "pin": "031-45-154"
+},
+"platforms": [{
+  "platform": "homebridge-switcher",
+  "name": "Arduino RF 433 switch",
+  "serial_port_in": "COM3",
+  "serial_port_out": "COM3",
+  "buttons" : [{
+    "name": "My first button"
+
+  }],
+  "lights": [{
+      "name": "Switch 1",
+      "remoteId" : 15060610,
+      "on": {
+        "deviceId": 0
+      },
+      "off": {
+        "deviceId": 0
+      }
+    },
+    {
+      "name": "Switch 2",
+      "remoteId" : 15060610,
+      "on": {
+        "deviceId": 1
+      },
+      "off": {
+        "deviceId": 1
+      }
+    }
+  ]
+}]
+}

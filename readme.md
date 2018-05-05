@@ -1,5 +1,9 @@
 <h2>homebridge-switcher (WIP)</h2>
+
+Simple RF switch for remote controlls 
+
 arduino code
+
 <code>
 
 
