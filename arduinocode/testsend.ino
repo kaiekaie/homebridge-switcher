@@ -70,8 +70,15 @@ void sendCodes (){
         long remoteid = getValue(receivedChars, '/', 0).toInt();
         byte id = getValue(receivedChars, '/', 1).toInt();
         boolean ison = getValue(receivedChars, '/', 2).toInt();
-        NewRemoteTransmitter transmitter(remoteid, 3, 256);
-        transmitter.sendUnit(id, ison);
+        NewRemoteTransmitter transmitter(remoteid, 3, 257);
+  
+        if(id >= 3){
+                transmitter.sendGroup(ison);
+          }else {
+
+                  transmitter.sendUnit(id, ison);
+          }
+        
        Serial.println(remoteid);
        Serial.println(id);
        Serial.println(ison);

@@ -31,10 +31,30 @@
       "name": "Switch 2",
       "remoteId" : 15060610,
       "on": {
-        "deviceId": 1
+        "deviceId":1
       },
       "off": {
-        "deviceId": 1
+        "deviceId":1
+      }
+    },
+    {
+      "name": "Switch 3",
+      "remoteId" : 15060610,
+      "on": {
+        "deviceId":2
+      },
+      "off": {
+        "deviceId":2
+      }
+    },
+    {
+      "name": "All switches",
+      "remoteId" : 15060610,
+      "on": {
+        "deviceId":3
+      },
+      "off": {
+        "deviceId":3
       }
     }
   ]
