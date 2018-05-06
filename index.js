@@ -1,11 +1,14 @@
-var Service, Characteristic;
+var Service, Characteristic,all;
 
 var sentCodes = [];
+var heapdump = require('heapdump');
 
 const sendCodes = require('./sp');
+const PQueue = require('p-queue');
+const queue = new PQueue({concurrency: 3});
+require('events').EventEmitter.prototype._maxListeners = 100;
 
 
-process.setMaxListeners(20);
 
 function ArduinoSwitchPlatform(log, config) {
     var self = this;
@@ -16,6 +19,7 @@ function ArduinoSwitchPlatform(log, config) {
 
 ArduinoSwitchPlatform.prototype.accessories = function(callback) {
     var self = this;
+     all = this;
     self.accessories = [];
     self.config.lights.forEach(function(sw) {
         self.accessories.push(new ArduinoLightAccessory(sw, self.log, self.config));
@@ -142,17 +146,28 @@ function ArduinoLightAccessory(sw, log, config) {
             return;
         };
         if(self.currentState) {
+    
+
             addCode(self.sw.on.deviceId,sentCodes);
-            sendCodes(self.sw.remoteId,self.sw.on.deviceId,1).then(() => {
+            queue.add(() => sendCodes(self.sw.remoteId,self.sw.on.deviceId,1,() => {
+
+            })).then(() => {
 
                 self.log('Sent on code for %s',self.sw.name);
-            });
+            }).catch((err) => {
+                console.log(err);
+            })
+        
         
         } else {
             addCode(self.sw.off.deviceId,sentCodes);
-            sendCodes(self.sw.remoteId,self.sw.off.deviceId,0).then(() => {
+            queue.add(() => sendCodes(self.sw.remoteId,self.sw.off.deviceId,0,() => {
+                
+            })).then(() => {
 
                 self.log('Sent off code for %s',self.sw.name);
+            }).catch((err) => {
+                console.log(err);
             })
         
         }
