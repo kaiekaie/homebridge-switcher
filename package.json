@@ -18,10 +18,12 @@
   "author": "Magnus aga",
   "license": "ISC",
   "dependencies": {
-    "heapdump": "^0.3.9",
     "p-queue": "^2.4.2",
     "parser-readline": "^1.0.2",
     "serialport": "^6.2.0",
     "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "memwatch-next": "^0.3.0"
   }
 }

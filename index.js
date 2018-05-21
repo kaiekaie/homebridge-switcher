@@ -1,11 +1,14 @@
 var Service, Characteristic,all;
 
 var sentCodes = [];
-var heapdump = require('heapdump');
 
-const sendCodes = require('./sp');
+
+const Serial = require('./sp');
 const PQueue = require('p-queue');
+var memwatch = require('memwatch-next');
+
 const queue = new PQueue({concurrency: 3});
+let  sp;
 require('events').EventEmitter.prototype._maxListeners = 100;
 
 
@@ -17,10 +20,19 @@ function ArduinoSwitchPlatform(log, config) {
 
 }
 
+memwatch.on('leak', function(info) {
+
+console.log(info)
+
+ });
+
 ArduinoSwitchPlatform.prototype.accessories = function(callback) {
     var self = this;
      all = this;
     self.accessories = [];
+
+  
+
     self.config.lights.forEach(function(sw) {
         self.accessories.push(new ArduinoLightAccessory(sw, self.log, self.config));
     });
@@ -31,7 +43,7 @@ ArduinoSwitchPlatform.prototype.accessories = function(callback) {
     self.config.HumiditySensor.forEach(function(sw) {
         self.accessories.push(new ArduinoHumiditySensorAccessory(sw, self.log, self.config));
     });
-
+        sp = new Serial( self.config.serial_port_in)
     callback(self.accessories);
 }
 
@@ -145,29 +157,39 @@ function ArduinoLightAccessory(sw, log, config) {
             cb(null);
             return;
         };
+        if(!self.config.serial_port_in){
+            cb(null);
+            return;
+        };
+
         if(self.currentState) {
     
 
-            addCode(self.sw.on.deviceId,sentCodes);
-            queue.add(() => sendCodes(self.sw.remoteId,self.sw.on.deviceId,1,() => {
 
+            addCode(self.sw.on.deviceId,sentCodes);
+            queue.add(() => sp.sendCodes(self.sw.remoteId,self.sw.on.deviceId,1,(callb) => {
+                self.log(callb);
             })).then(() => {
 
                 self.log('Sent on code for %s',self.sw.name);
             }).catch((err) => {
+                self.log(err);
                 console.log(err);
             })
         
         
         } else {
+
+     
             addCode(self.sw.off.deviceId,sentCodes);
-            queue.add(() => sendCodes(self.sw.remoteId,self.sw.off.deviceId,0,() => {
-                
+            queue.add(() => sp.sendCodes(self.sw.remoteId,self.sw.off.deviceId,0,(callb) => {
+                self.log(callb);
             })).then(() => {
 
                 self.log('Sent off code for %s',self.sw.name);
             }).catch((err) => {
                 console.log(err);
+                self.log(err);
             })
         
         }

@@ -7,7 +7,7 @@
 "platforms": [{
   "platform": "homebridge-switcher",
   "name": "Arduino RF 433 switch",
-  "serial_port_in": "COM3",
+  "serial_port_in": "COM5",
   "serial_port_out": "COM3",
   "HumiditySensor" : [{
     "name": "Plant Humidity"
